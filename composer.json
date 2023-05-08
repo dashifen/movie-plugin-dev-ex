@@ -1,0 +1,25 @@
+{
+  "name": "dashifen/movie-plugin-dev-ex",
+  "description": "An example of WordPress plugin development focusing on a custom post type for movies.",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "David Dashifen Kees",
+      "email": "dashifen@dashifen.com",
+      "homepage": "https://dashifen.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Dashifen\\Movies\\": "src"
+    }
+  },
+  "require": {
+    "php": ">=8.0"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true
+  }
+}
