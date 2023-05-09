@@ -70,7 +70,6 @@ $RECYCLE.BIN/
 .yarn/install-state.gz
 .yarn/unplugged
 /.htaccess
-/index.php
 /license.txt
 /readme.html
 /vendor/
