@@ -81,9 +81,7 @@ class MetaboxAgent
     <div class="wrap">
       <table class="form-table">
         
-        <?php
-        wp_nonce_field($prefix . 'save-metadata', $prefix . 'nonce');
-        
+        <?php wp_nonce_field($prefix . 'save-metadata', $prefix . 'nonce');
         foreach ($metadata as $key => $value) {
           $type = match ($key) {
             $prefix . 'director'     => 'text',
@@ -95,15 +93,21 @@ class MetaboxAgent
           <tr>
             <th>
               <label for="<?= $key ?>"><?= $this->unsanitizeKey($key) ?></label>
-              <?php
-              if ($type !== 'textarea') { ?>
+              
+              <?php if ($type !== 'textarea') { ?>
+              
                 <input type="<?= $type ?>" id="<?= $key ?>" name="<?= $key ?>" value="<?= $value ?>">
+              
               <?php } else { ?>
+              
                 <textarea id="<?= $key ?>" name="<?= $key ?>"><?= $value ?></textarea>
                 <p class="description">Enter actors one per line.</p>
+              
               <?php } ?>
+              
             </th>
           </tr>
+          
         <?php } ?>
       
       </table>
