@@ -17,6 +17,7 @@ class Movies
 {
   use WPDebuggingTrait;
   
+  public const SLUG = 'movies-plugin-dev-ex';
   public const POST_TYPE = 'movies';
   public const TAX_GENRE = 'genres';
   
@@ -52,6 +53,16 @@ class Movies
   public function getTextDomain(): string
   {
     if ($this->textDomain === null) {
+      
+      // if the textDomain property is currently null, then this is the first
+      // time we've requested our text domain during this HTTP request.  to get
+      // that information, we can use the get_plugin_data function within WP
+      // Core.  but, it might not be loaded yet.  so, we check for that, and
+      // once we guarantee that it exists, we call it and extract the text
+      // domain from it.  since this is a non-trivial operation, we only want
+      // to do it the first time.  for the second visit to this method and
+      // beyond, we just return the property that we set here in this if-block.
+      
       if (!function_exists('get_plugin_data')) {
         require_once ABSPATH . 'wp-admin/includes/plugin.php';
       }
@@ -63,4 +74,16 @@ class Movies
     return $this->textDomain;
   }
   
+  /**
+   * getPluginPrefix
+   *
+   * Returns a prefix that our Agents can use to differentiate our information
+   * from other information in the DOM or in the database.
+   *
+   * @return string
+   */
+  public function getPluginPrefix(): string
+  {
+    return self::SLUG . '-';
+  }
 }
