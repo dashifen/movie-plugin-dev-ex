@@ -3,6 +3,7 @@
 namespace Dashifen\Movies;
 
 use Dashifen\Movies\Agents\MetaboxAgent;
+use Dashifen\Movies\Agents\ListingAgent;
 use Dashifen\WPDebugging\WPDebuggingTrait;
 use Dashifen\Movies\Agents\RegistrationAgent;
 
@@ -35,6 +36,7 @@ class Movies
     $agents = [
       RegistrationAgent::class => new RegistrationAgent($this),
       MetaboxAgent::class      => new MetaboxAgent($this),
+      ListingAgent::class      => new ListingAgent($this),
     ];
     
     foreach ($agents as $agent) {
@@ -57,17 +59,26 @@ class Movies
       // if the textDomain property is currently null, then this is the first
       // time we've requested our text domain during this HTTP request.  to get
       // that information, we can use the get_plugin_data function within WP
-      // Core.  but, it might not be loaded yet.  so, we check for that, and
-      // once we guarantee that it exists, we call it and extract the text
-      // domain from it.  since this is a non-trivial operation, we only want
-      // to do it the first time.  for the second visit to this method and
-      // beyond, we just return the property that we set here in this if-block.
+      // Core.
       
       if (!function_exists('get_plugin_data')) {
+        
+        // if the get_plugin_data function is not yet loaded, we can do so
+        // by requiring the following file within this scope.  because we're
+        // within an object method, this won't impact WP Core when it loads
+        // it later on.  ABSPATH is defined during the WordPress loading
+        // process and points to the root of the site.
+        
         require_once ABSPATH . 'wp-admin/includes/plugin.php';
       }
       
-      $pluginData = get_plugin_data(realpath('../index.php'));
+      // once we know we have our function, we call it and send it the
+      // absolute path to this plugin's index file.
+      
+      $pluginData = get_plugin_data(
+        ABSPATH . 'wp-content/plugins/movie-plugin-dev-ex/index.php'
+      );
+      
       $this->textDomain = $pluginData['TextDomain'];
     }
     

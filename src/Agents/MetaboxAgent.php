@@ -4,6 +4,7 @@ namespace Dashifen\Movies\Agents;
 
 use WP_Post;
 use Dashifen\Movies\Movies;
+use Dashifen\WPDebugging\WPDebuggingTrait;
 
 /**
  * RegistrationAgent
@@ -13,6 +14,8 @@ use Dashifen\Movies\Movies;
  */
 class MetaboxAgent
 {
+  use WPDebuggingTrait;
+  
   /**
    * MetaboxAgent constructor.
    *
@@ -34,29 +37,29 @@ class MetaboxAgent
    */
   public function initialize(): void
   {
-    add_action('add_meta_boxes', [$this, 'registerMoviesMetabox']);
+    add_action('add_meta_boxes', [$this, 'registerMetabox']);
     
     // this is an example of a "dynamic hook."  it fires after a post has been
     // saved in the database but only for posts of the specified post type.
     // this is somewhat easier than using the more generalized "save_post"
     // hook and then exiting when the post type isn't the one we care about.
     
-    add_action('save_post_' . Movies::POST_TYPE, [$this, 'saveMovieMetadata']);
+    add_action('save_post_' . Movies::POST_TYPE, [$this, 'saveMetabox']);
   }
   
   /**
-   * registerMoviesMetabox
+   * registerMetabox
    *
    * Adds the metabox for movie metadata to the editor.
    *
    * @return void
    */
-  public function registerMoviesMetabox(): void
+  public function registerMetabox(): void
   {
     add_meta_box(
       $this->handler->getPluginPrefix() . 'metabox',  // HTML id of the DOM element
       'Movie Metadata',                               // on-screen title for that element
-      [$this, 'showMoviesMetabox'],                   // callback function that fills it
+      [$this, 'showMetabox'],                         // callback function that fills it
       Movies::POST_TYPE,                              // the post type that needs it
       'normal',                                       // its context, i.e. where it goes on-screen
       'high'                                          // its priority, i.e. put it at the top
@@ -64,7 +67,7 @@ class MetaboxAgent
   }
   
   /**
-   * showMoviesMetabox
+   * showMetabox
    *
    * Emits HTML that is placed within the metabox registered in the prior
    * method.
@@ -73,7 +76,7 @@ class MetaboxAgent
    *
    * @return void
    */
-  public function showMoviesMetabox(WP_Post $post): void
+  public function showMetabox(WP_Post $post): void
   {
     $prefix = $this->handler->getPluginPrefix();
     $metadata = self::getMetadata($post->ID, $prefix); ?>
@@ -84,30 +87,34 @@ class MetaboxAgent
         <?php wp_nonce_field($prefix . 'save-metadata', $prefix . 'nonce');
         foreach ($metadata as $key => $value) {
           $type = match ($key) {
-            $prefix . 'director'     => 'text',
-            $prefix . 'release-date' => 'date',
-            $prefix . 'running-time' => 'time',
-            $prefix . 'actors'       => 'textarea',
+            $prefix . 'director', $prefix . 'running-time' => 'text',
+            $prefix . 'release-date'                       => 'date',
+            $prefix . 'actors'                             => 'textarea',
           }; ?>
           
           <tr>
             <th>
               <label for="<?= $key ?>"><?= $this->unsanitizeKey($key) ?></label>
-              
+            </th>
+            <td>
               <?php if ($type !== 'textarea') { ?>
-              
-                <input type="<?= $type ?>" id="<?= $key ?>" name="<?= $key ?>" value="<?= $value ?>">
-              
-              <?php } else { ?>
-              
-                <textarea id="<?= $key ?>" name="<?= $key ?>"><?= $value ?></textarea>
+                
+                <input type="<?= $type ?>" id="<?= $key ?>" name="<?= $key ?>" value="<?= $value ?>"
+                  class="regular-text">
+                
+                <?php if ($key === $prefix . 'running-time') { ?>
+                  <p class="description">Enter running time in minutes.</p>
+                <?php }
+                
+              } else { ?>
+                
+                <textarea rows="10" cols="50" id="<?= $key ?>" name="<?= $key ?>"><?= join("\n", $value) ?></textarea>
                 <p class="description">Enter actors one per line.</p>
               
               <?php } ?>
-              
-            </th>
+            </td>
           </tr>
-          
+        
         <?php } ?>
       
       </table>
@@ -165,7 +172,7 @@ class MetaboxAgent
   }
   
   /**
-   * saveMovieMetadata
+   * saveMetabox
    *
    * Extracts the information we care about from the $_POST superglobal and
    * saves it in the database.
@@ -174,7 +181,7 @@ class MetaboxAgent
    *
    * @return void
    */
-  public function saveMovieMetadata(int $postId): void
+  public function saveMetabox(int $postId): void
   {
     $prefix = $this->handler->getPluginPrefix();
     
