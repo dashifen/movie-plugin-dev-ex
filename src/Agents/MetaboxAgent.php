@@ -4,7 +4,6 @@ namespace Dashifen\Movies\Agents;
 
 use WP_Post;
 use Dashifen\Movies\Movies;
-use Dashifen\WPDebugging\WPDebuggingTrait;
 
 /**
  * RegistrationAgent
@@ -14,8 +13,6 @@ use Dashifen\WPDebugging\WPDebuggingTrait;
  */
 class MetaboxAgent
 {
-  use WPDebuggingTrait;
-  
   /**
    * MetaboxAgent constructor.
    *

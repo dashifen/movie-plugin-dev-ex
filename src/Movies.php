@@ -4,7 +4,6 @@ namespace Dashifen\Movies;
 
 use Dashifen\Movies\Agents\MetaboxAgent;
 use Dashifen\Movies\Agents\ListingAgent;
-use Dashifen\WPDebugging\WPDebuggingTrait;
 use Dashifen\Movies\Agents\RegistrationAgent;
 
 /**
@@ -16,8 +15,6 @@ use Dashifen\Movies\Agents\RegistrationAgent;
  */
 class Movies
 {
-  use WPDebuggingTrait;
-  
   public const SLUG = 'movies-plugin-dev-ex';
   public const POST_TYPE = 'movies';
   public const TAX_GENRE = 'genres';

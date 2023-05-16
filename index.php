@@ -33,13 +33,34 @@ if (defined('ABSPATH')) {
       $movies = new Movies();
       $movies->initialize();
     } catch (MoviesException $e) {
-      
-      // the catcher function simply dumps the exception to the screen.  this
-      // would likely be a problem for production code, but it works in this
-      // example.  for more info, see https://github.com/dashifen/debugging,
-      // and find the method's definition in hte src/DebuggingTrait.php file.
-      
-      Movies::catcher($e);
+      if (defined(WP_DEBUG_DISPLAY) && WP_DEBUG_DISPLAY) {
+        
+        // if the WP debug display constant is defined and if it's true, then
+        // we just print the exception to the screen.  this lets us fix
+        // problems as they arrive in development, but in a production
+        // environment the WP_DEBUG_DISPLAY flag should almost never be true.
+        
+        echo "<pre>" . print_r($e, true) . "</pre>";
+      } else {
+        if (!function_exists("write_log")) {
+          
+          // if a write_log function doesn't already exist, we'll make on.
+          // this would let us define a more globally recognized log writer in
+          // a larger project, but maybe just have this little one here during
+          // development or something like that.
+          
+          function write_log($log): void
+          {
+            if (is_array($log) || is_object($log)) {
+              error_log(print_r($log, true));
+            } else {
+              error_log($log);
+            }
+          }
+        }
+        
+        write_log($e);
+      }
     }
   })();
 }

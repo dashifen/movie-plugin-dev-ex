@@ -3,12 +3,9 @@
 namespace Dashifen\Movies\Agents;
 
 use Dashifen\Movies\Movies;
-use Dashifen\WPDebugging\WPDebuggingTrait;
 
 class ListingAgent
 {
-  use WPDebuggingTrait;
-  
   public function __construct(
     private Movies $handler
   ) {
