@@ -68,8 +68,7 @@ class ListingAgent
    */
   public function fillDirectorColumn(string $column, int $postId): void
   {
-    $key = $this->handler->getPluginPrefix() . 'director';
-    if ($column === $key) {
+    if ($column === ($key = $this->handler->getPluginPrefix() . 'director')) {
       
       // if this is our custom column, then we get the value for our key out
       // of the database and print it to the screen.  this is one of the rare
