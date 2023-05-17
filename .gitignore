@@ -91,7 +91,7 @@ Thumbs.db
 Thumbs.db:encryptable
 [Dd]esktop.ini
 bower_components
-build/Release
+assets/Release
 composer.phar
 coverage
 dist

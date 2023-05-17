@@ -2,7 +2,7 @@
   "name": "dashifen/movie-plugin-dev-ex",
   "description": "An example of WordPress plugin development focusing on a custom post type for movies.",
   "minimum-stability": "stable",
-  "license": "proprietary",
+  "license": "NoHarm-draft",
   "authors": [
     {
       "name": "David Dashifen Kees",

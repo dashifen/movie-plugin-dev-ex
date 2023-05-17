@@ -2,6 +2,7 @@
 
 namespace Dashifen\Movies;
 
+use Dashifen\Movies\Agents\BlockAgent;
 use Dashifen\Movies\Agents\MetaboxAgent;
 use Dashifen\Movies\Agents\ListingAgent;
 use Dashifen\Movies\Agents\RegistrationAgent;
@@ -34,6 +35,7 @@ class Movies
       RegistrationAgent::class => new RegistrationAgent($this),
       MetaboxAgent::class      => new MetaboxAgent($this),
       ListingAgent::class      => new ListingAgent($this),
+      BlockAgent::class        => new BlockAgent($this),
     ];
     
     foreach ($agents as $agent) {
