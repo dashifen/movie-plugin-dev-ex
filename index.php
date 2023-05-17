@@ -24,6 +24,12 @@ if (version_compare(PHP_VERSION, '8.0', '<')) {
 
 if (defined('ABSPATH')) {
   if (!class_exists(Movies::class)) {
+    
+    // if PHP doesn't know about our objects, then we'll include our
+    // autoloader.  if this plugin were included in a larger composer-based
+    // build, then by the time we get here, a different autoloader would likely
+    // have been included already.
+    
     require_once 'vendor/autoload.php';
   }
   

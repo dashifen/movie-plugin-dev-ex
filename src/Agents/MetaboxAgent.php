@@ -122,7 +122,10 @@ class MetaboxAgent
   /**
    * getMetadata
    *
-   * Returns an array of our movie metadata for easy use elsewhere.
+   * This static method returns an array of our movie metadata for easy use
+   * elsewhere.  It's static because it's likely themes might need a good way
+   * to grab all of the metadata for a movie post and making it static allows
+   * that to happen most easily.
    *
    * @param int    $postId
    * @param string $prefix

@@ -6,6 +6,11 @@ use Dashifen\Movies\Movies;
 
 class ListingAgent
 {
+  /**
+   * ListingAgent constructor.
+   *
+   * @param Movies $handler
+   */
   public function __construct(
     private Movies $handler
   ) {
