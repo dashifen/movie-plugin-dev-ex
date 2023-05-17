@@ -16,6 +16,12 @@ namespace Dashifen;
 use Dashifen\Movies\Movies;
 use Dashifen\Movies\MoviesException;
 
+if (version_compare(PHP_VERSION, '8.0', '<')) {
+  $message = 'The Movies plugin requires PHP 8.0 or higher.  You\'re using %s.';
+  $message = sprintf($message, PHP_VERSION);
+  exit($message);
+}
+
 if (defined('ABSPATH')) {
   if (!class_exists(Movies::class)) {
     require_once 'vendor/autoload.php';
