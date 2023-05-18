@@ -4,15 +4,9 @@
   "name": "dashifen-movies-plugin-dev-ex",
   "description": "An example of WordPress plugin development focusing on a custom post type for movies.",
   "author": "David Dashifen Kees",
-  "main": "assets/index.js",
+  "main": "assets/src/index.js",
   "scripts": {
-    "build": "wp-scripts assets --webpack-src-dir=assets",
-    "format": "wp-scripts format",
-    "lint:css": "wp-scripts lint-style",
-    "lint:js": "wp-scripts lint-js",
-    "packages-update": "wp-scripts packages-update",
-    "plugin-zip": "wp-scripts plugin-zip",
-    "start": "wp-scripts start"
+    "build": "wp-scripts build"
   },
   "dependencies": {
     "@wordpress/blocks": "^12.10.0",
