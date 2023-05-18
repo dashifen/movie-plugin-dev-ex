@@ -9,7 +9,7 @@
   "attributes": {
     "movieId": {
       "type": "integer",
-      "default": 0
+      "selector": "input"
     }
   },
   "supports": {

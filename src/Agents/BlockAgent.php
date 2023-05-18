@@ -34,6 +34,7 @@ class BlockAgent
   public function initialize(): void
   {
     add_action('init', [$this, 'registerBlock']);
+    add_action('enqueue_block_assets', [$this, 'addBlockAssets']);
   }
   
   /**
@@ -46,7 +47,7 @@ class BlockAgent
    */
   public function registerBlock(): void
   {
-    $assetsFolder = dirname(__FILE__, 3) . '/assets';
+    $assetsFolder = dirname(__FILE__, 3) . '/assets/src';
     register_block_type_from_metadata($assetsFolder, [
       'render_callback' => [$this, 'renderBlock'],
     ]);
@@ -98,5 +99,19 @@ class BlockAgent
     }
     
     return $content;
+  }
+  
+  /**
+   * addBlockAssets
+   *
+   * Enqueues the JavaScript for our block.
+   *
+   * @return void
+   */
+  public function addBlockAssets(): void
+  {
+    $block = require_once dirname(__FILE__, 3) . '/assets/build/movie-block.min.asset.php';
+    $blockUrl = dirname(plugin_dir_url(__FILE__), 2) . '/assets/build/movie-block.min.js';
+    wp_enqueue_script('movie-block', $blockUrl, $block['dependencies'], $block['version'], true);
   }
 }

@@ -8,5 +8,6 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'assets/build'),
+    filename: 'movie-block.min.js',
   }
 };
